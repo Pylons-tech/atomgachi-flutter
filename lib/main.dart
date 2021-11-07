@@ -1,6 +1,20 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:ffi';
+import 'dart:io';
+
+import 'package:atomgachi_flutter/widgets/purchase_atom.dart';
+import 'package:atomgachi_flutter/widgets/marketplace.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:pylons_flutter/pylons_flutter.dart';
+import 'package:fixnum/fixnum.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  PylonsWallet.setup(mode: PylonsMode.prod, host: 'atomgachi');
+
   runApp(const MyApp());
 }
 
@@ -48,6 +62,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late String? deviceId = "noDeviceId";
+
+  void _createAtomgachiCookbook() async {
+    var cb = Cookbook(
+        creator: "",
+        iD: "atomgachi",
+        nodeVersion: "v0.0.1",
+        name: "Atomgachi",
+        description: "This is the Pylons app inspired by Wagmigotchi!",
+        developer: "mijolae",
+        version: "v0.0.1",
+        supportEmail: "mijolae.wright@pylons.tech",
+        costPerBlock: Coin(denom: "upylon", amount: "0"),
+        enabled: true);
+
+    var response = await PylonsWallet.instance.txCreateCookbook(cb);
+    print('From App $response');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    PylonsWallet.instance.exists().then((value) {
+      print('WALLET Existence $value');
+    });
+  }
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -57,12 +98,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      //_createAtomgachiCookbook();
+      print("BBREAKKKKKKKKKKK");
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    retrieveDeviceId();
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -74,6 +117,17 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PurchaseNewAtomgachi(deviceId)),
+                );
+              },
+              icon: Icon(Icons.add))
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -106,10 +160,31 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Marketplace()),
+          );
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // Unique ID on iOS
+    } else {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // Unique ID on Android
+    }
+  }
+
+  void retrieveDeviceId() async {
+    deviceId = await _getId();
   }
 }

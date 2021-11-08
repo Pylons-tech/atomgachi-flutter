@@ -86,7 +86,7 @@ class PurchaseNewAtomgachi extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              _createAtomgachiRecipe(createdAtomId);
+              //_createAtomgachiRecipe(createdAtomId);
               creationResponse
                   ? Navigator.push(
                       context,

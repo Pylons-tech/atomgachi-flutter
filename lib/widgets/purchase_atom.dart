@@ -51,7 +51,9 @@ class PurchaseNewAtomgachi extends StatelessWidget {
     var response = await PylonsWallet.instance.txCreateRecipe(rcp);
 
     print('From App $response');
-    executeRecipe(createdAtomId);
+    if (response.success) {
+      executeRecipe(createdAtomId);
+    }
   }
 
   void executeRecipe(String createdAtomId) async {
@@ -92,7 +94,7 @@ class PurchaseNewAtomgachi extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => AtomAttributesPage()))
-                  : Text("no");
+                  : print("Creation canceled");
             },
             child: Text("Create Atomgachi"),
           ),

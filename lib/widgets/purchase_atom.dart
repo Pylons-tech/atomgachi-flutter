@@ -58,12 +58,6 @@ class PurchaseNewAtomgachi extends StatelessWidget {
 
   void executeRecipe(String createdAtomId) async {
     //attaches your wallet address as the owner and creator
-
-    /*
-      flutter: {creator: pylo1l4s5t8g8y0rus0eayjj2z265xu3zu6yjp9wqru, cookbookID: atomgachi, recipeID: testAtomgachi2, coinInputsIndex: 0}
-      flutter: SDKIPCResponse{success: true, errorCode: , error: , data: C8CB3B8CBCF535F5BEBAB734A9D9A8B82C6A4936867A8ED683ED03F12E5922DD, sender: pylons-atomgachi, action: txExecuteRecipe}
-      flutter: From App SDKIPCResponse{success: true, errorCode: , error: , data: C8CB3B8CBCF535F5BEBAB734A9D9A8B82C6A4936867A8ED683ED03F12E5922DD, action: txExecuteRecipe}
-    */
     var response = await PylonsWallet.instance.txExecuteRecipe(
         cookbookId: 'atomgachi',
         recipeName: createdAtomId,

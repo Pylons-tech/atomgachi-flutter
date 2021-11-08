@@ -1,7 +1,10 @@
+import 'package:atomgachi_flutter/widgets/processing_mint.dart';
 import 'package:flutter/material.dart';
 
 class MyAtomsHomePage extends StatefulWidget {
-  const MyAtomsHomePage({Key? key}) : super(key: key);
+  String? deviceId;
+
+  MyAtomsHomePage(this.deviceId, {Key? key}) : super(key: key);
 
   @override
   _MyAtomsHomePageState createState() => _MyAtomsHomePageState();
@@ -53,7 +56,14 @@ class _MyAtomsHomePageState extends State<MyAtomsHomePage> {
                           height: 10,
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProcessingMint(widget.deviceId),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             primary: const Color.fromRGBO(132, 54, 124, 100),
                             elevation: 10,

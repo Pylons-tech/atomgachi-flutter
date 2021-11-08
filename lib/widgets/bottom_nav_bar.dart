@@ -46,7 +46,7 @@ class BottomNavigation extends StatelessWidget {
 
 List<Widget> _buildScreens() {
   return [
-    MyAtomsHomePage(),
+    //MyAtomsHomePage(),
   ];
 }
 

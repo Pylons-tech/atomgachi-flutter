@@ -4,7 +4,6 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:atomgachi_flutter/widgets/my_atoms.dart';
-import 'package:atomgachi_flutter/widgets/purchase_atom.dart';
 import 'package:atomgachi_flutter/widgets/marketplace.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -74,27 +73,72 @@ class _MyHomePageState extends State<MyHomePage> {
         name: "Atomgachi",
         description: "This is the Pylons app inspired by Wagmigotchi!",
         developer: "mijolae",
-        version: "v0.0.1",
+        version: "v0.0.2",
         supportEmail: "mijolae.wright@pylons.tech",
         costPerBlock: Coin(denom: "upylon", amount: "0"),
         enabled: true);
 
     var response = await PylonsWallet.instance.txCreateCookbook(cb);
     print('From App $response');
+    if (response.success) {
+      _createAtomgachiRecipe();
+    }
+  }
+
+  void _createAtomgachiRecipe() async {
+    var rcp = Recipe(
+        cookbookID: "atomgachi",
+        iD: "atomgachiDevCreate",
+        nodeVersion: "v0.0.1",
+        name: "Atom with it's Number here",
+        description: "mijollae is testing the demo process",
+        version: "v0.0.1",
+        coinInputs: [],
+        itemInputs: [],
+        entries: EntriesList(
+          coinOutputs: [],
+          itemOutputs: [
+            ItemOutput(
+              iD: "atomgachiDevCreate",
+              doubles: [],
+              longs: [],
+              strings: [],
+              mutableStrings: [],
+              transferFee: [],
+              tradePercentage: DecString.decStringFromDouble(0.1),
+              tradeable: true,
+            ),
+          ],
+          itemModifyOutputs: [],
+        ),
+        outputs: [
+          WeightedOutputs(
+              entryIDs: ["atomgachiDevCreate"],
+              weight: Int64(
+                  1)) /*needed " import 'package:fixnum/fixnum.dart' " here;*/
+        ],
+        blockInterval: Int64(0),
+        enabled: true,
+        extraInfo: "extraInfo");
+
+    var response = await PylonsWallet.instance.txCreateRecipe(rcp);
   }
 
   @override
   void initState() {
     super.initState();
-    /* PylonsWallet.instance.exists().then((value) {
+    PylonsWallet.instance.exists().then((value) {
       walletConnection = value;
       print('WALLET Existence $value');
-    }); */
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     retrieveDeviceId();
+
+    _createAtomgachiCookbook(); //should occur only ONCE
+
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -164,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const MyAtomsHomePage(),
+                        builder: (context) => MyAtomsHomePage(deviceId),
                       ),
                     );
                   },

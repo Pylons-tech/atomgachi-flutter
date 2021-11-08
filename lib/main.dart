@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:atomgachi_flutter/widgets/my_atoms.dart';
 import 'package:atomgachi_flutter/widgets/purchase_atom.dart';
 import 'package:atomgachi_flutter/widgets/marketplace.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -85,10 +86,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    PylonsWallet.instance.exists().then((value) {
+    /* PylonsWallet.instance.exists().then((value) {
       walletConnection = value;
       print('WALLET Existence $value');
-    });
+    }); */
   }
 
   @override
@@ -117,6 +118,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   letterSpacing: 3,
                   color: Color.fromRGBO(248, 250, 252, 10),
                 ),
+              ),
+              SizedBox(
+                height: 20,
               ),
               _buildStartButton(walletConnection)
             ],
@@ -154,36 +158,61 @@ class _MyHomePageState extends State<MyHomePage> {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
             children = <Widget>[
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Start",
-                  style: TextStyle(fontFamily: "JellyBelly"),
+              Container(
+                height: 70,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const MyAtomsHomePage(),
+                      ),
+                    );
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromRGBO(132, 54, 124, 100),
+                    ),
+                  ),
+                  child: const Text("Start",
+                      style: TextStyle(
+                          fontFamily: "JellyBelly",
+                          fontSize: 40,
+                          color: Colors.white)),
                 ),
               ),
             ];
           } else if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasError) {
             children = <Widget>[
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text("Connect"),
+              Container(
+                height: 70,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text("Connect"),
+                ),
               ),
             ];
           } else {
-            children = const <Widget>[
-              SizedBox(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ),
-                width: 80,
-                height: 80,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: Text(
-                  'Retrieving Data',
-                  style: TextStyle(fontSize: 20),
+            children = <Widget>[
+              Container(
+                height: 70,
+                child: Column(
+                  children: const <Widget>[
+                    SizedBox(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
+                      width: 30,
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        'Retrieving Wallet Information',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
                 ),
               )
             ];

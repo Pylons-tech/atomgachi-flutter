@@ -1,3 +1,5 @@
+import 'package:atomgachi_flutter/widgets/game_world.dart';
+import 'package:atomgachi_flutter/widgets/marketplace.dart';
 import 'package:atomgachi_flutter/widgets/processing_mint.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +62,9 @@ class _MyAtomsHomePageState extends State<MyAtomsHomePage> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    ProcessingMint(widget.deviceId),
+                                    //ProcessingMint(widget.deviceId),
+                                    //Marketplace(),
+                                    GameWorld(),
                               ),
                             );
                           },

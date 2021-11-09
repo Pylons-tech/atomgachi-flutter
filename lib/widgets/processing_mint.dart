@@ -109,6 +109,9 @@ Widget waitingOnResponse() {
 Widget recipeHasError() {
   return Column(
     children: [
+      SizedBox(
+        height: 60,
+      ),
       Image.asset("assets/images/sampleAtomgachiError.png"),
       const Text(
         "Oh No!",

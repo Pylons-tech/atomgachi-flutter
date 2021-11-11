@@ -7,17 +7,18 @@ class Marketplace extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/mintingBackground.png"),
-              fit: BoxFit.cover,
-            ),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/mintingBackground.png"),
+            fit: BoxFit.cover,
           ),
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -95,7 +96,9 @@ class Marketplace extends StatelessWidget {
                 ],
               ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

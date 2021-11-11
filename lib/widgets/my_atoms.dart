@@ -4,9 +4,7 @@ import 'package:atomgachi_flutter/widgets/processing_mint.dart';
 import 'package:flutter/material.dart';
 
 class MyAtomsHomePage extends StatefulWidget {
-  String? deviceId;
-
-  MyAtomsHomePage(this.deviceId, {Key? key}) : super(key: key);
+  MyAtomsHomePage({Key? key}) : super(key: key);
 
   @override
   _MyAtomsHomePageState createState() => _MyAtomsHomePageState();
@@ -51,7 +49,7 @@ class _MyAtomsHomePageState extends State<MyAtomsHomePage> {
                     Column(
                       children: [
                         Text(
-                          "AtomGachi",
+                          "AtomGatchi",
                           style: TextStyle(fontSize: 30),
                         ),
                         SizedBox(
@@ -61,10 +59,7 @@ class _MyAtomsHomePageState extends State<MyAtomsHomePage> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    //ProcessingMint(widget.deviceId),
-                                    //Marketplace(),
-                                    GameWorld(),
+                                builder: (context) => ProcessingMint(),
                               ),
                             );
                           },
@@ -106,7 +101,25 @@ class _MyAtomsHomePageState extends State<MyAtomsHomePage> {
                     child: Card(
                       elevation: 6,
                       child: SingleChildScrollView(
-                        child: Text("Atom List Widget needs to go here"),
+                        child: ListView(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(8.0),
+                          children: [
+                            Container(
+                              constraints: BoxConstraints(
+                                  minHeight: 40,
+                                  maxHeight: 100,
+                                  maxWidth: 150,
+                                  minWidth: 40),
+                              decoration: BoxDecoration(
+                                color: Color(0xFCF7FD),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

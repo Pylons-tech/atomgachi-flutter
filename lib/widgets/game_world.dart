@@ -12,6 +12,20 @@ class GameWorld extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 40,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Color.fromRGBO(132, 52, 124, 100)),
+            onPressed: () {},
+            child: Text("PLAY"),
+          ),
+        ],
+      ),
     );
   }
 }

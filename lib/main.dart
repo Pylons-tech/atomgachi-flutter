@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:atomgachi_flutter/config/theme.dart';
 import 'package:atomgachi_flutter/widgets/atom_created.dart';
+import 'package:atomgachi_flutter/widgets/home.dart';
 import 'package:atomgachi_flutter/widgets/my_atoms.dart';
 import 'package:atomgachi_flutter/widgets/marketplace.dart';
 import 'package:atomgachi_flutter/widgets/processing_mint.dart';
@@ -47,13 +48,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late String? deviceId = "noDeviceId";
   bool walletConnection = false;
+  bool cookbookCreated = false;
 
   void _createAtomgachiCookbook() async {
     var cb = Cookbook(
         creator: "",
-        iD: "atomgachi",
+        iD: "atomgatchiDemo",
         nodeVersion: "v0.0.1",
-        name: "Atomgachi",
+        name: "Atomgatchi Demo",
         description: "This is the Pylons app inspired by Wagmigotchi!",
         developer: "mijolae",
         version: "v0.0.2",
@@ -70,10 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _createAtomgachiRecipe() async {
     var rcp = Recipe(
-        cookbookID: "atomgachi",
-        iD: "atomgachiDevCreate",
+        cookbookID: "atomgatchiDemo",
+        iD: "atomgatchiDemoCreate",
         nodeVersion: "v0.0.1",
-        name: "Atom with it's Number here",
+        name: "AtomgatchiCreation",
         description: "mijollae is testing the demo process",
         version: "v0.0.1",
         coinInputs: [],
@@ -82,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           coinOutputs: [],
           itemOutputs: [
             ItemOutput(
-              iD: "atomgachiDevCreate",
+              iD: "atomgachiDemoCreate",
               doubles: [],
               longs: [],
               strings: [],
@@ -96,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         outputs: [
           WeightedOutputs(
-              entryIDs: ["atomgachiDevCreate"],
+              entryIDs: ["atomgachiDemoCreate"],
               weight: Int64(
                   1)) /*needed " import 'package:fixnum/fixnum.dart' " here;*/
         ],
@@ -120,8 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     retrieveDeviceId();
 
-    _createAtomgachiCookbook(); //should occur only ONCE
-
+    if (!cookbookCreated) {
+      _createAtomgachiCookbook(); //should occur only ONCE
+    }
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -136,20 +139,23 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                "Atomgachi",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 80,
-                  fontFamily: "JellyBelly",
-                  letterSpacing: 3,
-                  color: Color.fromRGBO(248, 250, 252, 10),
+              const FittedBox(
+                fit: BoxFit.fill,
+                child: Text(
+                  "Atomgatchi",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontFamily: "JellyBelly",
+                    letterSpacing: 3,
+                    color: Color.fromRGBO(248, 250, 252, 10),
+                  ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              _buildStartButton(walletConnection)
+              _buildStartButton(walletConnection),
             ],
           ),
         ),
@@ -183,7 +189,9 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           List<Widget> children;
           if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
+              snapshot.hasData &&
+              snapshot.data == true) {
+            cookbookCreated = true;
             children = <Widget>[
               Container(
                 height: 70,
@@ -191,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MyAtomsHomePage(deviceId),
+                        builder: (context) => Home(),
                       ),
                     );
                   },
@@ -209,13 +217,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ];
           } else if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasError) {
+              snapshot.hasData &&
+              snapshot.data == false) {
             children = <Widget>[
               Container(
                 height: 70,
                 child: ElevatedButton(
                   onPressed: () {},
-                  child: const Text("Connect"),
+                  child: const Text(
+                      "Connect to the Pylons Wallet to access Atomgatchi"),
                 ),
               ),
             ];

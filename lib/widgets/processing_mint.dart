@@ -1,19 +1,22 @@
+import 'package:atomgachi_flutter/widgets/atom_attributes.dart';
 import 'package:atomgachi_flutter/widgets/atom_created.dart';
 import 'package:flutter/material.dart';
 import 'package:pylons_flutter/pylons_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class ProcessingMint extends StatefulWidget {
-  String? deviceId;
-  ProcessingMint(this.deviceId);
-
   @override
   _ProcessingMintState createState() => _ProcessingMintState();
 }
 
 class _ProcessingMintState extends State<ProcessingMint> {
   Future<bool> creationResponse = Future<bool>.value(false);
-  String? deviceId;
+
+  Future<bool> _recipeNotSuccessful() {
+    return Future<bool>(() {
+      return false;
+    });
+  }
 
   Future<bool> executeRecipe() async {
     //attaches your wallet address as the owner and creator
@@ -37,14 +40,25 @@ class _ProcessingMintState extends State<ProcessingMint> {
 
   @override
   Widget build(BuildContext context) {
-    var uuid = Uuid();
-    String createdAtomId =
-        "atomgachi${deviceId}${uuid.v1()}".replaceAll("-", "");
-
     return Scaffold(
       extendBody: true,
       body: FutureBuilder<bool>(
-        future: executeRecipe(),
+        future: Future.delayed(
+          const Duration(seconds: 3),
+          () {
+            //executeRecipe();
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return AtomAttributesPage();
+                },
+              ),
+            );
+            return _recipeNotSuccessful();
+          },
+        ),
         builder: (BuildContext context, snapshot) {
           return Container(
             height: double.infinity,
@@ -74,10 +88,6 @@ class _ProcessingMintState extends State<ProcessingMint> {
                             snapshot.connectionState == ConnectionState.done &&
                             snapshot.data == false))
                       recipeHasError(),
-                    if (snapshot.hasData &&
-                        snapshot.connectionState == ConnectionState.done &&
-                        snapshot.data == true)
-                      recipeSuccessful(),
                   ],
                 ),
               ),
@@ -152,8 +162,4 @@ Widget recipeHasError() {
       ),
     ],
   );
-}
-
-Widget recipeSuccessful() {
-  return const AtomAttributesPage();
 }

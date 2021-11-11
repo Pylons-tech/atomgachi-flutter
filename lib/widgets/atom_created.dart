@@ -1,3 +1,6 @@
+import 'dart:js';
+
+import 'package:atomgachi_flutter/widgets/my_atoms.dart';
 import 'package:flutter/material.dart';
 
 class AtomAttributesPage extends StatefulWidget {
@@ -26,62 +29,74 @@ class _AtomAttributesPageState extends State<AtomAttributesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/mintingBackground.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            IconButton(
-              padding: EdgeInsets.all(14),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              alignment: Alignment.topLeft,
-              icon: const Icon(Icons.arrow_back_ios),
-              color: Colors.white,
+      extendBody: true,
+      body: SafeArea(
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/mintingBackground.png"),
+              fit: BoxFit.cover,
             ),
-            Stack(
-              children: [
-                Image.asset(
-                  "assets/images/avatar.png",
-                  width: 228,
-                ),
-                Positioned(
-                  right: 22,
-                  top: 56,
-                  child: Container(
-                    width: 224,
-                    height: 103,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
+          ),
+          child: Column(
+            children: [
+              IconButton(
+                padding: EdgeInsets.fromLTRB(0, 0, 350, 0),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MyAtomsHomePage()));
+                },
+                alignment: Alignment.topLeft,
+                icon: const Icon(Icons.arrow_back_ios),
+                color: Colors.white,
+              ),
+              Column(
+                children: [
+                  Center(
+                    child: Container(
+                      height: 400,
+                      child: Image.asset(
+                        "assets/images/avatar.png",
                       ),
                     ),
-                    child: const Center(
-                      child: Text("AtomGachi\n#1027",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color(0xFF647488),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 30)),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 7, 0),
+                        height: 50,
+                        width: 240,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                            topLeft: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0),
+                          ),
+                        ),
+                        child: Text("AtomGachi#1027",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF647488),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20)),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const Spacer(),
+                ],
+              ),
+            ],
+          ),
+        ),
+        /*const Spacer(),
             Container(
-              height: 448,
-              width: 300,
               margin: const EdgeInsets.symmetric(horizontal: 42),
               decoration: const BoxDecoration(boxShadow: [
                 BoxShadow(
@@ -100,7 +115,7 @@ class _AtomAttributesPageState extends State<AtomAttributesPage>
                           indicatorColor: Colors.black,
                           labelColor: Colors.black,
                           controller: _controller,
-                          tabs: const[
+                          tabs: const [
                             Tab(
                               text: 'Health',
                             ),
@@ -109,8 +124,8 @@ class _AtomAttributesPageState extends State<AtomAttributesPage>
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 400,
+                         SizedBox(
+                          height: 200,
                           child: TabBarView(
                             controller: _controller,
                             children: <Widget>[
@@ -118,30 +133,22 @@ class _AtomAttributesPageState extends State<AtomAttributesPage>
                                   margin: const EdgeInsets.only(
                                       left: 40, right: 27),
                                   child: ListView.builder(
+                                    shrinkWrap: true,
                                     itemCount: healthInfoNames.length,
-                                    itemBuilder: (context, index) =>
-                                        healthInfo(context,
-                                            healthInfoNames[index]),
+                                    itemBuilder: (context, index) => healthInfo(
+                                        context, healthInfoNames[index]),
                                   )),
                               Container(
                                 child: attributesInfo(context),
                               ),
                             ],
                           ),
-                        ),
-                      ]),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+                        ), */
       ),
     );
   }
 }
-
+/* 
 Widget healthInfo(BuildContext context, String title) {
   return Padding(
     padding: const EdgeInsets.only(top: 42.0),
@@ -185,7 +192,7 @@ Widget attributesInfo(BuildContext context) {
   final colorInfo = ["skin:", "eyes:", "hair:", "nose:", "mouth:"];
   final healthInfo = ["strength:", "stamina:", "hunger:", "rarity:"];
   return Padding(
-    padding: const EdgeInsets.fromLTRB(23,19,23,24.0),
+    padding: const EdgeInsets.fromLTRB(23, 19, 23, 24.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -205,6 +212,7 @@ Widget attributesInfo(BuildContext context) {
               height: 100,
               margin: const EdgeInsets.only(left: 18),
               child: ListView.builder(
+                  shrinkWrap: true,
                   itemCount: colorInfo.length,
                   itemBuilder: (context, index) => Text(colorInfo[index],
                       style: Theme.of(context).textTheme.bodyText1)),
@@ -221,7 +229,8 @@ Widget attributesInfo(BuildContext context) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("glasses:", style: Theme.of(context).textTheme.bodyText1),
+                  Text("glasses:",
+                      style: Theme.of(context).textTheme.bodyText1),
                   Text(" false", style: Theme.of(context).textTheme.bodyText1),
                 ],
               ),
@@ -247,6 +256,7 @@ Widget attributesInfo(BuildContext context) {
               height: 100,
               margin: const EdgeInsets.only(left: 18),
               child: ListView.builder(
+                  shrinkWrap: true,
                   itemCount: healthInfo.length,
                   itemBuilder: (context, index) => Text(healthInfo[index],
                       style: Theme.of(context).textTheme.bodyText1)),
@@ -256,9 +266,9 @@ Widget attributesInfo(BuildContext context) {
       ],
     ),
   );
-}
-
-/*idget healthStatus() {
+} */
+/*  
+Widget healthStatus() {
   return Column(
     children: [
       Text("Stamina"),
@@ -287,4 +297,5 @@ Widget attributesInfo(BuildContext context) {
           progressColor: Colors.green),
     ],
   );
-}*/
+} */
+ 
